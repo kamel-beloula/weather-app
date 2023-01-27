@@ -33,6 +33,7 @@ $("#search-button").on("click", function(event) {
         
         inputGroup.append(cityButton, windButton, humidiyButton);
     });
+    searchInput = $("#search-input").val("");
   
     // -----------------------------------------------------------------------
   
