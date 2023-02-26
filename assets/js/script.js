@@ -64,30 +64,52 @@ function renderCityButtons() {
   });
 }
 
+
 function weatherForecast() {
-  
-  let queryURL = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + lat +'&lon=' + lon +'&appid=' + myApiKey;
-  $.ajax({url: queryURL,method: "GET",}).then(function (response) {
-    let iconCode = response.weather[0].icon;
-  $("#history").empty();
-  searchInput = $("#search-input").val("");
-  $("#forecast").empty();
-  for (var i = 1; i <6 ; i++) {    
-      forecastEl.append(
-    $('<div>', { class: 'col' }).append(
-        $('<div>', { class: 'card forecast' }).append(
-            $('<div>', { class: 'card-body' }).append([
-                $('<h4>').attr('class','card-title').append($('<img>')),
-                $('<p>').attr('class', 'card-text').text(response.daily[i].weather[0].main),
-                $('<p>').attr('class', 'card-text').text(response.wind.speed),
-                $('<p>').attr('class', 'card-text').text(response.daily[i].humidity)
-            ])
-        )
-    )
-);
-  }
-})
-}
+  let searchInput = $("#search-input").val().trim();
+  var apiKey = "166a433c57516f51dfab1f7edaed8413";
+  var forecast ="https://api.openweathermap.org/data/2.5/forecast?q=" +searchInput +"&units=metric&appid=" + apiKey;
+  $.ajax({
+    url: forecast,method: "GET",}).then(function (response) {console.log(response);
+    historyEl.empty();
+    var weatherArray = response.list;
+    for (var i = 0; i < weatherArray.length; i++) {
+      console.log(weatherArray[i]);
+      if (weatherArray[i].dt_txt.split(" ")[1] === "12:00:00") {
+        for (var i = 1; i <6 ; i++) {    
+                forecastEl.append(
+              $('<div>', { class: 'col' }).append(
+                  $('<div>', { class: 'card forecast' }).append(
+                      $('<div>', { class: 'card-body' }).append([
+                          $('<h4>').attr('class','card-title').append($('<img>')),
+                          $('<p>').attr('class', 'card-text').text(response.daily[i].weather[0].main),
+                          $('<p>').attr('class', 'card-text').text(response.wind.speed),
+                          $('<p>').attr('class', 'card-text').text(response.daily[i].humidity)
+      ]))))}}}})}
+
+// function weatherForecast() {
+//   let queryURL = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + lat +'&lon=' + lon +'&appid=' + myApiKey;
+//   $.ajax({url: queryURL,method: "GET",}).then(function (response) {
+//   $("#history").empty();
+//   searchInput = $("#search-input").val("");
+//   $("#forecast").empty();
+//   if (weatherArray[i].dt_txt.split(" ")[1] === "12:00:00") {
+//   for (var i = 1; i <6 ; i++) {    
+//       forecastEl.append(
+//     $('<div>', { class: 'col' }).append(
+//         $('<div>', { class: 'card forecast' }).append(
+//             $('<div>', { class: 'card-body' }).append([
+//                 $('<h4>').attr('class','card-title').append($('<img>')),
+//                 $('<p>').attr('class', 'card-text').text(response.daily[i].weather[0].main),
+//                 $('<p>').attr('class', 'card-text').text(response.wind.speed),
+//                 $('<p>').attr('class', 'card-text').text(response.daily[i].humidity)
+//             ])
+//         )
+//     )
+// );  
+//   }
+// })
+// }
 
 historyEl.on('click', '.btn-secondary', function (event) {
     event.preventDefault();
