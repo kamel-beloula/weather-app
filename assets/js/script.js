@@ -81,7 +81,7 @@ function weatherForecast() {
               $('<div>', { class: 'col' }).append(
                   $('<div>', { class: 'card forecast' }).append(
                       $('<div>', { class: 'card-body' }).append([
-                          $('<h4>').attr('class','card-title').append($('<img>')),
+                          $('<h4>').attr('class','card-title').append($('<img>').attr("src","http://openweathermap.org/img/w/" +weatherArray[i].weather[0].icon +".png")),
                           $('<p>').attr('class', 'card-text').text(response.daily[i].weather[0].main),
                           $('<p>').attr('class', 'card-text').text(response.wind.speed),
                           $('<p>').attr('class', 'card-text').text(response.daily[i].humidity)
