@@ -81,6 +81,7 @@ function weatherForecast() {
 //     $('<div>', { class: 'col' }).append(
 //         $('<div>', { class: 'card forecast' }).append(
 //             $('<div>', { class: 'card-body' }).append([
+//                 $('<h4>').attr('class','card-date').text(`${moment(data.list[i].dt_txt).format(`dddd`)}`),
 //                 $('<h4>').attr('class','card-title').append($('<img>').addClass(`icon`).attr(`src`, `https://openweathermap.org/img/wn/` + data.list[i].weather[0].icon + `@2x.png`).attr(`alt`, data.list[i].weather[0].description)),
 //                 $('<p>').attr('class', 'card-text').text(response.daily[i].weather[0].main),
 //                 $('<p>').attr('class', 'card-text').text(response.wind.speed),
@@ -93,41 +94,17 @@ function weatherForecast() {
             var icon = data.list[i].weather[0].icon; // pulls icon code in
             var iconTxt = data.list[i].weather[0].description // pulls in weather description
             var iconImg = `https://openweathermap.org/img/wn/` + icon + `@2x.png`; // adds icon code to url
-            
-            var windSpeed = data.list[i].wind.speed * 3.6; // pulls in wind speed + converts to km/hr
-
-            let forecastCard = $(`<div>`)
-            .addClass(`card forecastCard`)
-
-            let forecastDate = $(`<h4>`)
-            .addClass(`forecastDate`).text(`${moment(data.list[i].dt_txt).format(`dddd`)}`)
-
-            let forecastIcon = $(`<img>`)
-            .addClass(`icon`).attr(`src`, iconImg).attr(`alt`, iconTxt)
-
-            let forecastTemp = $(`<span>`)
-            .addClass(`forecastTemp`).text(`Temp: ` + tempC.toFixed(2) + ` °C`)
-
-            let forecastWind = $(`<span>`)
-            .addClass(`forecastWind`).text(`Wind : ` + (data.list[i].wind.speed * 3.6).toFixed(2) + ` km/h`)
-
-            let forecastHumidity = $(`<span>`)
-            .addClass(`forecastHumidity`).text(`Humidity: ` + data.list[i].main.humidity + ` %`)
-
-            // append HTML elements
-            forecastCard.append(forecastDate);
-            forecastCard.append(forecastIcon);
-            forecastCard.append(forecastTemp);
-            forecastCard.append(forecastWind);
-            forecastCard.append(forecastHumidity);
-
-            // append to HTML existing structre
-            forecastEl.append(forecastCard);
+            let forecastCard = $(`<div>`).addClass(`card forecastCard`)
+            let forecastDate = $(`<h4>`).addClass(`forecastDate`).text(`${moment(data.list[i].dt_txt).format(`dddd`)}`)
+            let forecastIcon = $(`<img>`).addClass(`icon`).attr(`src`, iconImg).attr(`alt`, iconTxt)
+            let forecastTemp = $(`<span>`).addClass(`forecastTemp`).text(`Temp: ` + tempC.toFixed(2) + ` °C`)
+            let forecastWind = $(`<span>`).addClass(`forecastWind`).text(`Wind : ` + (data.list[i].wind.speed * 3.6).toFixed(2) + ` km/h`)
+            let forecastHumidity = $(`<span>`).addClass(`forecastHumidity`).text(`Humidity: ` + data.list[i].main.humidity + ` %`)
+            forecastEl.append(forecastCard.append(forecastDate, forecastIcon, forecastTemp, forecastWind, forecastHumidity));
         }
     };
 });
 }
-
 // function weatherForecast() {
 //   let queryURL = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + lat +'&lon=' + lon +'&appid=' + myApiKey;
 //   $.ajax({url: queryURL,method: "GET",}).then(function (response) {
