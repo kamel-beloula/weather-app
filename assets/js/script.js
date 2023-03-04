@@ -53,7 +53,7 @@ function currentWeather() {
 }
 
 function renderCityButtons() {
-  
+  forecastEl.empty();
   cityList.forEach(function (searchInput) {
     if (searchInput){
         $("#history").append(
@@ -71,69 +71,28 @@ function weatherForecast() {
   $.ajax({
     url: forecast,
     method: "GET"
-}).then(function(data) {        
-  $("#history").empty();
-  $("#forecast").empty();
-    for (let i = 8; i < data.list.length; i++) {
-        if (i % 8 === 0 || i === data.list.length - 1) {
-          //   for (var i = 1; i <6 ; i++) {    
-//       forecastEl.append(
-//     $('<div>', { class: 'col' }).append(
-//         $('<div>', { class: 'card forecast' }).append(
-//             $('<div>', { class: 'card-body' }).append([
-//                 $('<h4>').attr('class','card-date').text(`${moment(data.list[i].dt_txt).format(`dddd`)}`),
-//                 $('<h4>').attr('class','card-title').append($('<img>').addClass(`icon`).attr(`src`, `https://openweathermap.org/img/wn/` + data.list[i].weather[0].icon + `@2x.png`).attr(`alt`, data.list[i].weather[0].description)),
-//                 $('<p>').attr('class', 'card-text').text(response.daily[i].weather[0].main),
-//                 $('<p>').attr('class', 'card-text').text(response.wind.speed),
-//                 $('<p>').attr('class', 'card-text').text(`Humidity: ` + data.list[i].main.humidity + ` %`)
-//             ])
-//         )
-//     )
-            var date = moment().add(i, 'day');
-            var tempC = data.list[i].main.temp - 273.15; // converts Kelvin to Celsius
-            var icon = data.list[i].weather[0].icon; // pulls icon code in
-            var iconTxt = data.list[i].weather[0].description // pulls in weather description
-            var iconImg = `https://openweathermap.org/img/wn/` + icon + `@2x.png`; // adds icon code to url
-            let forecastCard = $(`<div>`).addClass(`card forecastCard`)
-            let forecastDate = $(`<h4>`).addClass(`forecastDate`).text(`${moment(data.list[i].dt_txt).format(`dddd`)}`)
-            let forecastIcon = $(`<img>`).addClass(`icon`).attr(`src`, iconImg).attr(`alt`, iconTxt)
-            let forecastTemp = $(`<span>`).addClass(`forecastTemp`).text(`Temp: ` + tempC.toFixed(2) + ` °C`)
-            let forecastWind = $(`<span>`).addClass(`forecastWind`).text(`Wind : ` + (data.list[i].wind.speed * 3.6).toFixed(2) + ` km/h`)
-            let forecastHumidity = $(`<span>`).addClass(`forecastHumidity`).text(`Humidity: ` + data.list[i].main.humidity + ` %`)
-            forecastEl.append(forecastCard.append(forecastDate, forecastIcon, forecastTemp, forecastWind, forecastHumidity));
+}).then(function(response) {        
+  forecastEl.empty();
+    for (let i = 8; i < response.list.length; i++) {
+        if (i % 8 === 0 || i === response.list.length - 1) {
+            forecastEl.append(($('<div>').addClass('card forecastCard')).append(
+              $('<h4>').addClass(`forecastDate').text('${moment(response.list[i].dt_txt).format('dddd')}`), 
+              $('<img>').addClass('icon').attr('src', 'https://openweathermap.org/img/wn/' + response.list[i].weather[0].icon + '@2x.png').attr('alt', response.list[i].weather[0].description), 
+              $('<span>').addClass('forecastTemp').text('Temp: ' + response.list[i].main.temp - 273.15.toFixed(2) + ' °C'), 
+              $('<span>').addClass('forecastWind').text('Wind : ' + (response.list[i].wind.speed * 3.6).toFixed(2) + ' km/h'), 
+              $('<span>').addClass('forecastHumidity').text('Humidity: ' + response.list[i].main.humidity + ' %')
+              ));
         }
     };
 });
 }
-// function weatherForecast() {
-//   let queryURL = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + lat +'&lon=' + lon +'&appid=' + myApiKey;
-//   $.ajax({url: queryURL,method: "GET",}).then(function (response) {
-//   $("#history").empty();
-//   searchInput = $("#search-input").val("");
-//   $("#forecast").empty();
-//   if (weatherArray[i].dt_txt.split(" ")[1] === "12:00:00") {
-//   for (var i = 1; i <6 ; i++) {    
-//       forecastEl.append(
-//     $('<div>', { class: 'col' }).append(
-//         $('<div>', { class: 'card forecast' }).append(
-//             $('<div>', { class: 'card-body' }).append([
-//                 $('<h4>').attr('class','card-title').append($('<img>')),
-//                 $('<p>').attr('class', 'card-text').text(response.daily[i].weather[0].main),
-//                 $('<p>').attr('class', 'card-text').text(response.wind.speed),
-//                 $('<p>').attr('class', 'card-text').text(response.daily[i].humidity)
-//             ])
-//         )
-//     )
-// );  
-//   }
-// })
-// }
+
 
 historyEl.on('click', '.btn-secondary', function (event) {
     event.preventDefault();
     let entry = event.target;
     console.log(entry);
-    let city = entry.getAttribute('data-city');
+    let city = entry.getAttribute('response-city');
     
     console.log(city);
     currentWeather(city);
