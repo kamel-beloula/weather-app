@@ -1,10 +1,16 @@
+header{
+    background-image: url(../images/weather-header.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}    
 #search-button {
     background-color: #003566;
     color: white;
 }
 
 #search-button:hover {
-    background-color: #837d94;
+    background-color: #e513c2;
     color: white;
 }
 
@@ -16,4 +22,12 @@
 
 .Btn:hover {
     background-color: gold;
+}
+#forecast{
+    display: flex;
+    justify-content: space-evenly;
+}
+.card{
+    margin: 10px;
+    padding: 10px;
 }
