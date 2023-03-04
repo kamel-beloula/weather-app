@@ -59,21 +59,18 @@ function renderCityButtons() {
 
 
 function weatherForecast() {
-  forecastEl.empty();
-   forecastEl.append(
-            $('<div>', { 'class': 'col-12 pt-3' }).append(
-                $('<h4>', { 'class': 'font-weight-bold', 'text': '5-Day Forecast:' })
-            )
-        );
   let searchInput = $("#search-input").val().trim();
   var apiKey = "166a433c57516f51dfab1f7edaed8413";
   var forecast ="https://api.openweathermap.org/data/2.5/forecast?q=" +searchInput +"&units=metric&appid=" + apiKey;
-  $.ajax({url: forecast, method: "GET"}).then(function(response) {        
-  
-    for (let i = 8; i < response.list.length; i++) {
+  forecastEl.empty();
+  forecastEl.append(
+            $('<div>', { 'class': 'col-12 pt-3' }).append(
+                $('<h4>', { 'class': 'font-weight-bold', 'text': '5-Day Forecast:' })));
+    $.ajax({url: forecast, method: "GET"}).then(function(response) {        
+      for (let i = 8; i < response.list.length; i++) {
         if (i % 8 === 0 || i === response.list.length - 1) {
             forecastEl.append(($('<div>').addClass('card forecastCard')).append(
-              $('<h4>').addClass(`forecastDate').text('${moment(response.list[i].dt_txt).format('dddd')}`), 
+              $('<h4>').addClass('forecastDate').text(`${moment(response.list[i].dt_txt).format('dddd')}`), 
               $('<img>').addClass('icon').attr('src', 'https://openweathermap.org/img/wn/' + response.list[i].weather[0].icon + '@2x.png').attr('alt', response.list[i].weather[0].description), 
               $('<h5>').addClass('forecastTemp').text('Temp: ' + response.list[i].main.temp +' °C'), 
               $('<h5>').addClass('forecastWind').text('Wind : ' + response.list[i].wind.speed + ' km/h'), 
