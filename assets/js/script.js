@@ -59,11 +59,17 @@ function renderCityButtons() {
 
 
 function weatherForecast() {
+  forecastEl.empty();
+   forecastEl.append(
+            $('<div>', { 'class': 'col-12 pt-3' }).append(
+                $('<h4>', { 'class': 'font-weight-bold', 'text': '5-Day Forecast:' })
+            )
+        );
   let searchInput = $("#search-input").val().trim();
   var apiKey = "166a433c57516f51dfab1f7edaed8413";
   var forecast ="https://api.openweathermap.org/data/2.5/forecast?q=" +searchInput +"&units=metric&appid=" + apiKey;
   $.ajax({url: forecast, method: "GET"}).then(function(response) {        
-  forecastEl.empty();
+  
     for (let i = 8; i < response.list.length; i++) {
         if (i % 8 === 0 || i === response.list.length - 1) {
             forecastEl.append(($('<div>').addClass('card forecastCard')).append(
