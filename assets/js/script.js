@@ -41,20 +41,21 @@ function currentWeather() {
             ]),
         ]),
     ]);
-    renderCityButtons(searchInput);
+    renderCityButtons();
     weatherForecast();
   });
 }
 
 function renderCityButtons() {
   historyEl.empty();
+  let searchInput = $("#search-input").val().trim();
+  if (!cityList.includes(searchInput)){
   cityList.forEach(function (searchInput) {
-    if (searchInput){
         $("#history").append(
             $("<button>").addClass("btn btn-secondary mb-2").attr("data-city", searchInput).text(searchInput)
           );
-    }
-  });
+    })
+  };
 }
 
 
